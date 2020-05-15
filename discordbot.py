@@ -1,21 +1,58 @@
-from discord.ext import commands
-import os
-import traceback
+# インストールした discord.py を読み込む
+import discord
 
-bot = commands.Bot(command_prefix='/')
-token = os.environ['DISCORD_BOT_TOKEN']
-
-
-@bot.event
-async def on_command_error(ctx, error):
-    orig_error = getattr(error, "original", error)
-    error_msg = ''.join(traceback.TracebackException.from_exception(orig_error).format())
-    await ctx.send(error_msg)
+# 自分のBotのアクセストークンに置き換えてください
+TOKEN = 'NzEwODExMzU4NzA2NTMyMzcy.Xr6FkQ.Hi4Fco2Ds-kumStkMEsUq91y1tk'
 
 
-@bot.command()
-async def ping(ctx):
-    await ctx.send('pong')
+# 接続に必要なオブジェクトを生成
+client = discord.Client()
 
+# 起動時に動作する処理
+@client.event
+async def on_ready():
+    # 起動したらターミナルにログイン通知が表示される
+    print('ログインしました')
 
-bot.run(token)
+# メッセージ受信時に動作する処理
+@client.event
+async def on_message(message):
+    # メッセージ送信者がBotだった場合は無視する
+    if message.author.bot:
+        return
+    # 「x」と発言したら「y」が返る処理
+    if message.content == 'おはよう':
+        await message.channel.send('今日も一日頑張ろう！')
+
+    if message.author.bot:
+        return
+    if message.content == 'おやすみ':
+        await message.channel.send('ゆっくり休んでね')
+
+    if message.author.bot:
+        return
+    if message.content == 'ただいま':
+        await message.channel.send('おかえり')
+
+    if message.author.bot:
+        return
+    if message.content == '疲れた':
+        await message.channel.send('疲れた時は休もうね')
+
+    if message.author.bot:
+        return
+    if message.content == '大好き':
+        await message.channel.send('ありがとう')
+
+    if message.author.bot:
+        return
+    if message.content == 'いってきます':
+        await message.channel.send('いってらっしゃい')
+
+    if message.author.bot:
+        return
+    if message.content == '行ってきます':
+        await message.channel.send('いってらっしゃい')
+        
+    # Botの起動とDiscordサーバーへの接続
+client.run(TOKEN)
